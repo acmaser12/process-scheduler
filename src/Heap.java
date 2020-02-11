@@ -13,7 +13,7 @@ public class Heap<ProcessInfo extends Comparable<ProcessInfo>> {
 
     private ArrayList<ProcessInfo> list = new ArrayList<>();
 
-    public Heap(ProcessInfo[] processes) {
+    public Heap(ArrayList<ProcessInfo> processes) {
         for (ProcessInfo process : processes) {
             add(process);
         }
@@ -26,7 +26,7 @@ public class Heap<ProcessInfo extends Comparable<ProcessInfo>> {
         while (currentIndex > 0) {
             int parentIndex = (currentIndex - 1) / 2;
             // swap if current process is greater than its parent
-            if (list.get(currentIndex).compareTo(list.get(parentIndex)) > 0) {
+            if (list.get(currentIndex).compareTo(list.get(parentIndex)) < 0) {
                 ProcessInfo temp = list.get(currentIndex);
                 list.set(currentIndex, list.get(parentIndex));
                 list.set(parentIndex, temp);
@@ -75,4 +75,6 @@ public class Heap<ProcessInfo extends Comparable<ProcessInfo>> {
     public int getSize() {
         return list.size();
     }
+
+    public ArrayList<ProcessInfo> getList() { return this.list; }
 }

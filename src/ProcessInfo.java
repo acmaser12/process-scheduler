@@ -21,18 +21,33 @@ public class ProcessInfo implements Comparable<ProcessInfo>{
         this.processRemainingRuntime = processRemainingRuntime;
     }
 
-    public boolean executeProcess(int val) {
-        return true;
+    public void executeProcess(int currentTime) {
+        int executionTime = 10 - this.processPriority;
+        try {
+            Thread.sleep(executionTime);
+        } catch (InterruptedException ex) {
+            System.out.println("Process interrupted, closing program...");
+            System.exit(2);
+        }
+        // reduce remaining time
+        this.processRemainingRuntime = this.processRemainingRuntime - executionTime;
+
+        if (this.processRemainingRuntime <= 0) {
+
+            endProcess();
+        }
     }
 
     @Override
     public int compareTo(ProcessInfo process) {
-        return 1;
+        // compare processPriority
+        return Integer.compare(this.processPriority, process.processPriority);
     }
 
     @Override
     public String toString() {
-        return "";
+        return "Process Name: " + this.processName + "\tProcess Id: " + this.processId + "\tProcess Priority: " +
+                this.processPriority + "\tProcess Remaining Runtime: " + this.processRemainingRuntime;
     }
 
     public String displayCompletedInfo() {
@@ -42,4 +57,5 @@ public class ProcessInfo implements Comparable<ProcessInfo>{
     public void endProcess() {
 
     }
+
 }
