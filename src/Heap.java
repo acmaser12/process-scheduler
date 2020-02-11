@@ -13,11 +13,9 @@ public class Heap<ProcessInfo extends Comparable<ProcessInfo>> {
 
     private ArrayList<ProcessInfo> list = new ArrayList<>();
 
-    public Heap(){};
-
     public Heap(ProcessInfo[] processes) {
-        for (int i = 0; i < processes.length; i++) {
-            add(processes[i]);
+        for (ProcessInfo process : processes) {
+            add(process);
         }
     }
 
