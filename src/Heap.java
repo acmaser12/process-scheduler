@@ -2,7 +2,7 @@
 written by: Adam Maser
 CSC420
 Week 4 Project
-MyHeap -- implements Heap class from section 23.9 of book
+MyHeap -- implements Heap class from section 23.6 of book
 
 DERIVED FROM: Section 23.6 of course textbook
  */
