@@ -13,13 +13,13 @@ public class Heap<ProcessInfo extends Comparable<ProcessInfo>> {
 
     private ArrayList<ProcessInfo> list = new ArrayList<>();
 
-    public Heap(ArrayList<ProcessInfo> processes) {
+    Heap(ArrayList<ProcessInfo> processes) {
         for (ProcessInfo process : processes) {
             add(process);
         }
     }
 
-    public void add(ProcessInfo process) {
+    private void add(ProcessInfo process) {
         list.add(process);  // add to heap
         int currentIndex = list.size() - 1;  // get index of last node
 
@@ -72,9 +72,9 @@ public class Heap<ProcessInfo extends Comparable<ProcessInfo>> {
         return removedObject;
     }
 
-    public int getSize() {
+    int getSize() {
         return list.size();
     }
 
-    public ArrayList<ProcessInfo> getList() { return this.list; }
+    ArrayList<ProcessInfo> getList() { return this.list; }
 }

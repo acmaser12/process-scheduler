@@ -22,8 +22,7 @@ public class ProcessInfo implements Comparable<ProcessInfo>{
         this.processRemainingRuntime = processRemainingRuntime;
     }
 
-    public boolean executeProcess(int currentTime) {
-        //System.out.println(currentTime);
+    boolean executeProcess(int currentTime) {
         // if this is the  first execution, set start time
         if (timesExecuted == 0) {
             this.processStartTime = currentTime;
@@ -31,7 +30,6 @@ public class ProcessInfo implements Comparable<ProcessInfo>{
         timesExecuted++;
         // calculate execution time from processPriority
         int executionTime = 10 - this.processPriority;
-        // DEBUG System.out.println("Executing " + this.processName + " for: " + executionTime + " with " + this.processRemainingRuntime + " remaining");
 
         // simulate execution using Thread.sleep
         try {
@@ -44,7 +42,7 @@ public class ProcessInfo implements Comparable<ProcessInfo>{
         // decrement remaining time
         this.processRemainingRuntime = this.processRemainingRuntime - executionTime;
 
-        // check if process has finished executing
+        // check if process has finished executing, return false if it has finished
         if (this.processRemainingRuntime <= 0) {
             // calculate end time
             this.processEndTime = currentTime + executionTime;
@@ -68,7 +66,7 @@ public class ProcessInfo implements Comparable<ProcessInfo>{
                 this.processPriority + "\t\tProcess Remaining Runtime: " + this.processRemainingRuntime;
     }
 
-    public String displayCompletedInfo() {
+    String displayCompletedInfo() {
         return "Process Name: " + this.processName + "\t\tProcess Priority: " + this.processPriority +
                 "\t\tCompletion Time: " + this.processElapsedTime;
     }

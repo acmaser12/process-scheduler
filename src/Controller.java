@@ -53,7 +53,7 @@ public class Controller {
             System.out.println("File not found, exiting program...");
             System.exit(2);
         }
-        // best
+        // create ArrayList for processes
         ArrayList<ProcessInfo> processes = new ArrayList<>();
 
         while (fileReader.hasNextLine()) {
@@ -66,39 +66,46 @@ public class Controller {
     }
 
     private void printHeap(Heap<ProcessInfo> heap) {
-        int levelSize = 1;
-        int location = 0;
-        int currentLevel = 0;
-        ArrayList<ProcessInfo> heapList = heap.getList();
+        int levelSize = 1;  // number of elements in level
+        int location = 0;  // location in heapList
+        int currentLevel = 0;  // current level of heap
+        ArrayList<ProcessInfo> heapList = heap.getList();  // get list from heap (which is sorted as a tree already)
 
+        // loop through list and output each process in each level
         while (location < heap.getSize()) {
             System.out.println("Current Level: " + currentLevel);
             for (int i = 0; i < levelSize; i++) {
+                // if the location is bigger than heap, break loop
                 if (location >= heap.getSize()) {
                     break;
                 }
                 System.out.println("\t" + heapList.get(location).toString());
                 location++;
             }
+            // increment currentLevel and increase level (each subsequent level of a tree is 2x bigger than prev)
             currentLevel++;
             levelSize *= 2;
         }
     }
 
     private Heap<ProcessInfo> executeProcesses(Heap<ProcessInfo> heap) {
+        // get list from heap
         ArrayList<ProcessInfo> heapList = heap.getList();
+        // get size of heap
         int originalSize = heap.getSize();
+        // create container for list of finished processes
         ArrayList<ProcessInfo> completedList = new ArrayList<>();
+        // loop through processes until all are complete
         while (completedList.size() < originalSize) {
             for (int i = 0; i < heap.getSize(); i++) {
                 boolean isCompleted = heapList.get(i).executeProcess((int)System.currentTimeMillis() % 10000);
+                // if completed, add to completedList and remove from heapList
                 if (!isCompleted) {
                     completedList.add(heapList.get(i));
                     heapList.remove(i);
                 }
             }
         }
-
-        return new Heap<ProcessInfo>(completedList);
+        return new Heap<>(completedList);
     }
 }
