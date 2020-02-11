@@ -13,28 +13,46 @@ public class ProcessInfo implements Comparable<ProcessInfo>{
     private long processStartTime;
     private long processEndTime;
     private long processElapsedTime;
+    private int timesExecuted = 0;
 
-    public ProcessInfo(String processName, int processId, int processPriority, int processRemainingRuntime) {
+    ProcessInfo(String processName, int processId, int processPriority, int processRemainingRuntime) {
         this.processName = processName;
         this.processId = processId;
         this.processPriority = processPriority;
         this.processRemainingRuntime = processRemainingRuntime;
     }
 
-    public void executeProcess(int currentTime) {
+    public boolean executeProcess(int currentTime) {
+        //System.out.println(currentTime);
+        // if this is the  first execution, set start time
+        if (timesExecuted == 0) {
+            this.processStartTime = currentTime;
+        }
+        timesExecuted++;
+        // calculate execution time from processPriority
         int executionTime = 10 - this.processPriority;
+        // DEBUG System.out.println("Executing " + this.processName + " for: " + executionTime + " with " + this.processRemainingRuntime + " remaining");
+
+        // simulate execution using Thread.sleep
         try {
             Thread.sleep(executionTime);
         } catch (InterruptedException ex) {
             System.out.println("Process interrupted, closing program...");
             System.exit(2);
         }
-        // reduce remaining time
+
+        // decrement remaining time
         this.processRemainingRuntime = this.processRemainingRuntime - executionTime;
 
+        // check if process has finished executing
         if (this.processRemainingRuntime <= 0) {
-
+            // calculate end time
+            this.processEndTime = currentTime + executionTime;
+            // call endProcess method
             endProcess();
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -46,16 +64,18 @@ public class ProcessInfo implements Comparable<ProcessInfo>{
 
     @Override
     public String toString() {
-        return "Process Name: " + this.processName + "\tProcess Id: " + this.processId + "\tProcess Priority: " +
-                this.processPriority + "\tProcess Remaining Runtime: " + this.processRemainingRuntime;
+        return "Process Name: " + this.processName + "\t\tProcess Id: " + this.processId + "\t\tProcess Priority: " +
+                this.processPriority + "\t\tProcess Remaining Runtime: " + this.processRemainingRuntime;
     }
 
     public String displayCompletedInfo() {
-        return "";
+        return "Process Name: " + this.processName + "\t\tProcess Priority: " + this.processPriority +
+                "\t\tCompletion Time: " + this.processElapsedTime;
     }
 
-    public void endProcess() {
-
+    private void endProcess() {
+        // calculate elapsed time
+        this.processElapsedTime = this.processEndTime - this.processStartTime;
     }
 
 }

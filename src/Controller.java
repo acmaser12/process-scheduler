@@ -8,7 +8,6 @@ Controller.java - Execution class for process-scheduler
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class Controller {
@@ -31,8 +30,17 @@ public class Controller {
         // creating new heap also sorts the objects into heap (see Heap class)
         Heap<ProcessInfo> newHeap = new Heap<>(processes);
 
+        // output heap by level
         printHeap(newHeap);
 
+        // execute each process
+        Heap<ProcessInfo> finishedProcesses = executeProcesses(newHeap);
+
+        // loop through and print the results of each process
+        System.out.println("\n");
+        for (int i = 0; i < finishedProcesses.getSize(); i++) {
+            System.out.println(finishedProcesses.getList().get(i).displayCompletedInfo());
+        }
 
     }
 
@@ -75,5 +83,22 @@ public class Controller {
             currentLevel++;
             levelSize *= 2;
         }
+    }
+
+    private Heap<ProcessInfo> executeProcesses(Heap<ProcessInfo> heap) {
+        ArrayList<ProcessInfo> heapList = heap.getList();
+        int originalSize = heap.getSize();
+        ArrayList<ProcessInfo> completedList = new ArrayList<>();
+        while (completedList.size() < originalSize) {
+            for (int i = 0; i < heap.getSize(); i++) {
+                boolean isCompleted = heapList.get(i).executeProcess((int)System.currentTimeMillis() % 10000);
+                if (!isCompleted) {
+                    completedList.add(heapList.get(i));
+                    heapList.remove(i);
+                }
+            }
+        }
+
+        return new Heap<ProcessInfo>(completedList);
     }
 }
